@@ -1,4 +1,6 @@
-﻿function createCurrencyList(list) {
+﻿var rate = {} ;
+
+function createCurrencyList(list) {
     var select = document.createElement('select');
     list.forEach(function (currency) {
         var option = document.createElement('option');
@@ -15,7 +17,8 @@ function makeRequest(params, callback) {
     xhr.responseType = 'json';
     xhr.addEventListener('loadend', function listener() {
         xhr.removeEventListener('loadend', listener);
-        callback(xhr.response);
+        rate = xhr.response;
+        callback(rate);
     });
     xhr.send();
 }
@@ -45,8 +48,8 @@ makeRequest({
     select.addEventListener('change', function () {
         loaderCurrencyRate(select, input, p);
     });
-    input.addEventListener('change', function () {
-        loaderCurrencyRate(select, input, p);
+    input.addEventListener ('input', function () {
+        resolver(input, rate, p);
     });
     document.body.appendChild(select);
     document.body.appendChild(input);
